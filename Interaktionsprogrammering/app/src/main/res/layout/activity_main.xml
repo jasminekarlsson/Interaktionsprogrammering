@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:autoText="false"
             android:ems="10"
             android:inputType="textPersonName"
             android:singleLine="true"
