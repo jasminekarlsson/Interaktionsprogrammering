@@ -8,10 +8,13 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -131,6 +134,132 @@ public class MainActivity extends AppCompatActivity {
         return myLayout;
 
     }
+
+    protected RelativeLayout lab3(RelativeLayout myLayout) {
+
+        TextView text1 = new TextView(this);
+        text1.setText("Hur trivs du på LiU?");
+        text1.setId(1);
+        TextView text2 = new TextView(this);
+        text2.setText("Läser du på LiTH?");
+        text2.setId(2);
+        TextView text3 = new TextView(this);
+        text3.setText("Är detta LiUs logga?");
+        text3.setId(3);
+
+        CheckBox ans11 = new CheckBox(this);
+        ans11.setText("Bra");
+        ans11.setId(11);
+        CheckBox ans12 = new CheckBox(this);
+        ans12.setText("Mycket bra");
+        ans12.setId(12);
+        CheckBox ans13 = new CheckBox(this);
+        ans13.setText("Jättebra");
+        ans13.setId(13);
+
+        CheckBox ans21 = new CheckBox(this);
+        ans21.setText("Ja");
+        ans21.setId(21);
+        CheckBox ans22 = new CheckBox(this);
+        ans22.setText("Nej");
+        ans22.setId(22);
+
+        CheckBox ans31 = new CheckBox(this);
+        ans31.setText("Ja");
+        ans31.setId(31);
+        CheckBox ans32 = new CheckBox(this);
+        ans32.setText("Nej");
+        ans32.setId(32);
+
+        ImageView image = new ImageView(this);
+        image.setId(4);
+        image.setImageResource(R.drawable.LiUlogo);
+
+        RelativeLayout.LayoutParams q1 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams a11 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams a12 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams a13 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        RelativeLayout.LayoutParams q2 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams a21 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams a22 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        RelativeLayout.LayoutParams q3 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams a31 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams a32 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        q1.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        q1.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        a11.addRule(RelativeLayout.BELOW, text1.getId());
+        a11.addRule(RelativeLayout.ALIGN_PARENT_START);
+        a12.addRule(RelativeLayout.ALIGN_BASELINE, ans11.getId());
+        a12.addRule(RelativeLayout.ALIGN_BOTTOM, ans11.getId());
+        a12.addRule(RelativeLayout.END_OF, ans11.getId());
+        a13.addRule(RelativeLayout.ALIGN_BASELINE, ans12.getId());
+        a13.addRule(RelativeLayout.ALIGN_BOTTOM, ans12.getId());
+        a13.addRule(RelativeLayout.END_OF, ans12.getId());
+
+        q2.addRule(RelativeLayout.BELOW, ans11.getId());
+        q2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        a21.addRule(RelativeLayout.BELOW, text2.getId());
+        a21.addRule(RelativeLayout.ALIGN_PARENT_START);
+        a22.addRule(RelativeLayout.ALIGN_BASELINE, ans21.getId());
+        a22.addRule(RelativeLayout.ALIGN_BOTTOM, ans21.getId());
+        a22.addRule(RelativeLayout.END_OF, ans21.getId());
+
+        q3.addRule(RelativeLayout.BELOW, image.getId());
+        q3.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        a31.addRule(RelativeLayout.BELOW, text3.getId());
+        a31.addRule(RelativeLayout.ALIGN_PARENT_START);
+        a32.addRule(RelativeLayout.ALIGN_BASELINE, ans31.getId());
+        a32.addRule(RelativeLayout.ALIGN_BOTTOM, ans31.getId());
+        a32.addRule(RelativeLayout.END_OF, ans31.getId());
+
+        imageParams.addRule(RelativeLayout.BELOW, ans21.getId());
+        imageParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        myLayout.addView(text1, q1);
+        myLayout.addView(ans11, a11);
+        myLayout.addView(ans12, a12);
+        myLayout.addView(ans13, a13);
+
+        myLayout.addView(text2, q2);
+        myLayout.addView(ans21, a21);
+        myLayout.addView(ans22, a22);
+
+        myLayout.addView(text3, q3);
+        myLayout.addView(ans31, a31);
+        myLayout.addView(ans32, a32);
+
+        myLayout.addView(image, imageParams);
+
+        return myLayout;
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -142,10 +271,16 @@ public class MainActivity extends AppCompatActivity {
         secondLayout.setOrientation(1);
         secondLayout.setMinimumWidth(400);
 
+        RelativeLayout thirdLayout = new RelativeLayout(this);
+
 
         //myLayout = lab1(myLayout);
+        //setContentView(myLayout);
+
         secondLayout = lab2(secondLayout);
         setContentView(secondLayout);
+
+
 
         //setContentView(R.layout.activity_main);
     }
