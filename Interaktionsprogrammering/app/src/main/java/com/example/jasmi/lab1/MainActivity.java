@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.view.Gravity;
 import android.view.View;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         EditText emailField = new EditText(this);
         emailField.setMaxLines(1);
         emailField.setText("Anders.froberg@liu.se");
+        emailField.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
         TextView name = new TextView(this);
         name.setText("Namn");
@@ -173,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView image = new ImageView(this);
         image.setId(4);
-        image.setImageResource(R.drawable.LiUlogo);
+        image.setImageResource(R.drawable.liulogo);
 
         RelativeLayout.LayoutParams q1 = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,

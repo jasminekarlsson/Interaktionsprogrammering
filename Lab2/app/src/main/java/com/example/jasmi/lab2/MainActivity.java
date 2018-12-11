@@ -2,7 +2,11 @@ package com.example.jasmi.lab2;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -21,25 +25,29 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, List<String>> listDetail = new HashMap<String, List<String>>();
 
         List<String> light=  new ArrayList<String>();
-        light.add("Blue");
-        light.add("Green");
-        light.add("Pink");
+        light.add("blue");
+        light.add("green");
+        light.add("pink");
 
         List<String> medium=  new ArrayList<String>();
-        medium.add("Green");
-        medium.add("Yellow");
-        medium.add("Red");
-        medium.add("Blue");
+        medium.add("green");
+        medium.add("yellow");
+        medium.add("red");
+        medium.add("blue");
 
         List<String> dark=  new ArrayList<String>();
-        dark.add("Purple");
-        dark.add("Green");
-        dark.add("Blue");
+        dark.add("purple");
+        dark.add("green");
+        dark.add("blue");
 
-        listDetail.put("Light", light);
-        listDetail.put("Medium", medium);
-        listDetail.put("Dark", dark);
+        listDetail.put("light", light);
+        listDetail.put("medium", medium);
+        listDetail.put("dark", dark);
         return listDetail;
+    }
+
+    public void setWhite(){
+
     }
 
     @Override
@@ -47,11 +55,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.listview);
+
         final HashMap<String, List<String>> listDetail = getData();
         final List<String> expandableListTitle = new ArrayList<String>(listDetail.keySet());
-        ExpandableListAdapter listAdapter = new ListAdapter(this, expandableListTitle, listDetail);
+        final EditText searchField = (EditText) findViewById(R.id.searchway);
+        final ExpandableListView listView = (ExpandableListView) findViewById(R.id.listview); //Finds listView
+
+        final ListAdapter listAdapter = new ListAdapter(this, expandableListTitle, listDetail);
         listView.setAdapter(listAdapter);
+
+
+
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPos) {
@@ -60,9 +74,10 @@ public class MainActivity extends AppCompatActivity {
                 String par = expandableListTitle.get(groupPos);
                 TextView searchWay = (TextView) findViewById(R.id.searchway);
                 searchWay.setText("/" + par);
-                
-                TextView text = (TextView) findViewById(R.id.listTitle);
-                text.setBackgroundResource(R.color.colorAccent);
+
+                //TextView text = (TextView) findViewById(R.id.listTitle);
+                //text.setBackgroundResource(R.color.colorAccent);
+
             }
         });
 
@@ -100,6 +115,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        searchField.addTextChangedListener(new TextWatcher(){
+
+            public void afterTextChanged(Editable s) {
+                //searchField.setText("Efter");
+                TextView searchWay = (TextView) findViewById(R.id.searchway);
+                String text = searchField.getText().toString();
+                listAdapter.filterData(text, searchWay, listView);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //searchField.getText().clear();
+
+            }
+        });
 
 
 
