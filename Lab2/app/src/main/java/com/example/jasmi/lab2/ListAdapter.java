@@ -199,7 +199,7 @@ public class ListAdapter implements ExpandableListAdapter {
                         System.out.println("Index to be marked: " + index);
                         listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-                        listView.setItemChecked(8, true);
+                        listView.setItemChecked(index, true);
 
 
                         //listView.expandGroup(indexes.indexOf(list.getKey())); //Position of the titles
@@ -250,7 +250,7 @@ public class ListAdapter implements ExpandableListAdapter {
                                         System.out.println("Index to be marked: " + index);
                                         listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-                                        listView.setItemChecked(7, true);
+                                        listView.setItemChecked(index, true);
 
                                     } else if (color.length() > queryColor.length()) {
                                         //Wait for more input
@@ -264,6 +264,12 @@ public class ListAdapter implements ExpandableListAdapter {
                                         //Searchway is red
                                         Log.v("Headline", "Input is too long");
                                         searchWay.setBackgroundColor(Color.RED);
+                                        int index = listView.getFlatListPosition(listView.getPackedPositionForChild(indexes.indexOf(list.getKey()), i));
+                                        System.out.println("Index to be marked: " + index);
+                                        listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+
+                                        listView.setItemChecked(index, false);
+
 
                                     }
 
@@ -277,6 +283,11 @@ public class ListAdapter implements ExpandableListAdapter {
                         {
                             //Markera sökvägen röd
                             //Avmarkera noder
+                            int index = listView.getFlatListPosition(listView.getPackedPositionForGroup(indexes.indexOf(list.getKey())));
+                            System.out.println("Index to be marked: " + index);
+                            listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+
+                            listView.setItemChecked(index, false);
                         }
                     }
 
@@ -300,6 +311,7 @@ public class ListAdapter implements ExpandableListAdapter {
                 //Mark search field red
                 searchWay.setBackgroundColor(Color.RED);
                 Log.v("FilterData", "Do not exist");
+
             }
 
         }
