@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +27,14 @@ import static java.lang.Math.min;
  * Created by jasmi on 2018-11-29.
  */
 
+/////STOOOOOOOOOOOOOOOOOOOOOOOOOP
+
 public class ListAdapter implements ExpandableListAdapter {
 
     private Context context;
     private List<String> listTitle;
     private HashMap<String, List<String>> listDetail;
+    private int lastExpandaded = -1;
 
     public ListAdapter(Context cont, List<String> expListTitle, HashMap<String, List<String>> expListDetail){
 
@@ -48,6 +53,7 @@ public class ListAdapter implements ExpandableListAdapter {
     public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
 
     }
+
 
     @Override
     public int getGroupCount() {
@@ -83,6 +89,7 @@ public class ListAdapter implements ExpandableListAdapter {
     public boolean hasStableIds() {
         return false;
     }
+
 
     @Override
     public View getGroupView(int listPos, boolean isExpanded, View convertView, ViewGroup parent) {
@@ -151,31 +158,35 @@ public class ListAdapter implements ExpandableListAdapter {
     }
 
     @SuppressLint("ResourceAsColor")
-    public void filterData(String query, TextView searchWay, ExpandableListView listView)
+    public void filterData(String query, EditText searchWay, ExpandableListView listView)
     {
+        //Make query to Lower case
+        String orgQuery = query;
         query = query.toLowerCase();
-                                            //SetItemChecked
-                                            //GetFlatIndexPosition
-                                            // KOLLA MER PÅ DETTA NÄR NI VILL MARKERA SAKER
-                                            //int index = expandableListView.getFlatListPosition(ExpandableListView.getPackedPositionForChild(i, i1));
-                                            //Toast.makeText(getApplicationContext(), String.valueOf(index), Toast.LENGTH_SHORT).show();
-                                            //expandableListView.setItemChecked(index, true);
 
+        //Check if query is empty, then set the text to "/" and make searchfield white
         if(query.isEmpty())
         {
             //Unmark everyone
             Log.v("FilterData", "Query is empty");
             searchWay.setText("/");
+            searchWay.setSelection(1);
             searchWay.setBackgroundColor(Color.WHITE);
         }
+        //Query contains text
         else
         {
-            query = query.substring(1);
+            System.out.println("Query is: " + query);
             boolean found = false;
+            //Removes first letter in query since it is a "/"
+            if(query.charAt(0) == '/')
+                query = query.substring(1);
+
+
+            //Loops through all parents in lists
             for (HashMap.Entry<String, List<String>> list : listDetail.entrySet()) {
 
                 List<String> indexes = new ArrayList<String>(listDetail.keySet());
-                //Kolla om rubriken är satt till string
 
                 //Make query and list the same length to be able to compare them
                 String comparableQuery = query.substring(0,min(query.length(), list.getKey().length()));
@@ -185,36 +196,48 @@ public class ListAdapter implements ExpandableListAdapter {
                 if(comparableQuery.equals(comparableList)){
                     found = true;
 
-
-                    //Check if they have the same length, then we found the right searchway
+                    //Check if they have the same length, then we found the right searchway, mark item and expand list
                     if(list.getKey().length() == query.length())
                     {
-                        //Mark the current list Item
-                        //Search way set to white
                         searchWay.setBackgroundColor(Color.WHITE);
                         found = true;
-                        Log.v("Headline", "Head list item should be marked");
 
                         int index = listView.getFlatListPosition(listView.getPackedPositionForGroup(indexes.indexOf(list.getKey())));
+                        int expand = indexes.indexOf(list.getKey());
                         System.out.println("Index to be marked: " + index);
                         listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
                         listView.setItemChecked(index, true);
 
+                        //Check if list is not expanded, collapse the old list and expand the current
+                        if(!listView.isGroupExpanded(expand)) {// && lastExpandaded != index) {
 
-                        //listView.expandGroup(indexes.indexOf(list.getKey())); //Position of the titles
+                            System.out.println("lastExpandaded in parent is " + lastExpandaded);
+                            if(lastExpandaded != -1)
+                            {
+                                System.out.println("Collapsing group: " + lastExpandaded);
+                                listView.collapseGroup(lastExpandaded);
+
+                            }
+
+                            lastExpandaded = expand;
+                            listView.expandGroup(expand); //Position of the titles
+                        }
+
+
+                        searchWay.setSelection(orgQuery.length());
+
                     }
                     //The text is not finished yet, wait for more input
                     else if(list.getKey().length() > query.length()){
-                        //Senaste noden ska vara markerad
-                        //Sökfältets bakgrundsfärg vit
                         searchWay.setBackgroundColor(Color.WHITE);
                         Log.v("Headline", "Wait for more input");
 
                     }
-                    //Check if the query is the same as the child
+                    //Parent is the same, check if the query is the same as the child
                     else
                     {
+                        int index = listView.getFlatListPosition(listView.getPackedPositionForGroup(indexes.indexOf(list.getKey())));
                         if(query.charAt(list.getKey().length()) == '/')
                         {
                             String queryColor = query.substring(list.getKey().length() + 1);
@@ -236,39 +259,32 @@ public class ListAdapter implements ExpandableListAdapter {
                                 //Check if query and list starts the same way
                                 else if (comparableQueryColor.equals(comparableListColor)) {
 
-                                    Log.v("FilterData", "They are the same");
-                                    System.out.println("They are the same");
-                                    //Check if they have the same length, then we found the right searchway
+                                    //Check if they have the same length, then we found the right searchway, mark item and set sarchway to white
                                     if (color.length() == queryColor.length()) {
-                                        //Found the right search way
-                                        //Set searchway to White
-                                        //Mark the item in the list
                                         Log.v("Headline", "Found right searchway for subItem in list");
                                         foundChild = true;
                                         searchWay.setBackgroundColor(Color.WHITE);
-                                        int index = listView.getFlatListPosition(listView.getPackedPositionForChild(indexes.indexOf(list.getKey()), i));
-                                        System.out.println("Index to be marked: " + index);
+                                        int indexChild = listView.getFlatListPosition(listView.getPackedPositionForChild(indexes.indexOf(list.getKey()), i));
+                                        System.out.println("IndexChild to be marked: " + indexChild);
                                         listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-                                        listView.setItemChecked(index, true);
+                                        listView.setItemChecked(indexChild, true);
 
+                                        searchWay.setSelection(orgQuery.length());
+                                    //Query is not fully filled yet, wait for more input and searchway is white
                                     } else if (color.length() > queryColor.length()) {
-                                        //Wait for more input
-                                        //Searchway is white
-                                        Log.v("Headline", "Waiting for more input for subItem");
                                         foundChild = true;
                                         searchWay.setBackgroundColor(Color.WHITE);
 
-                                    } else {
-                                        //Wrong input
-                                        //Searchway is red
-                                        Log.v("Headline", "Input is too long");
+                                    }
+                                    //Input is wrong, turns the searchway red
+                                    else {
                                         searchWay.setBackgroundColor(Color.RED);
-                                        int index = listView.getFlatListPosition(listView.getPackedPositionForChild(indexes.indexOf(list.getKey()), i));
-                                        System.out.println("Index to be marked: " + index);
+                                        int indexChild = listView.getFlatListPosition(listView.getPackedPositionForChild(indexes.indexOf(list.getKey()), i));
+
                                         listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-                                        listView.setItemChecked(index, false);
+                                        listView.setItemChecked(indexChild, false);
 
 
                                     }
@@ -276,34 +292,24 @@ public class ListAdapter implements ExpandableListAdapter {
                                 }
 
                             }
+
                             if(foundChild == false)
                                 found = false;
                         }
+                        //Wrong search way
                         else
                         {
                             //Markera sökvägen röd
                             //Avmarkera noder
-                            int index = listView.getFlatListPosition(listView.getPackedPositionForGroup(indexes.indexOf(list.getKey())));
-                            System.out.println("Index to be marked: " + index);
+                            int indexChild = listView.getFlatListPosition(listView.getPackedPositionForGroup(indexes.indexOf(list.getKey())));
+                            System.out.println("Index to be marked: " + indexChild);
                             listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-                            listView.setItemChecked(index, false);
+                            listView.setItemChecked(indexChild, false);
                         }
                     }
 
-
-
-
-
                 }
-                else{
-                    //Markera sökvägen röd
-                    //Avmarkera noder
-
-                }
-
-
-                //Log.v("FilterData", "Loop through hashmap");
 
 
             }

@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         myLayout.addView(myButton, -1,  fillParent);
         myLayout.addView(editText, -1, fillParent);
-        //myLayout.addView(stars);
         myLayout.addView(stars, -1, wrapChild);
         myLayout.addView(textRows, -1 , fillParentFull);
 
@@ -284,6 +283,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //setContentView(R.layout.activity_main);
+        //setContentView(R.layout.lab1_part1);
     }
 }

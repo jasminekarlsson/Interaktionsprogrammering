@@ -16,11 +16,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
+/////STOOOOOOOOOOOOOOOOOOOOOOOOOP
 
 public class MainActivity extends AppCompatActivity {
 
 
+    boolean clicked = false;
+    int lastExpanded = -1;
     public  HashMap<String, List<String>> getData(){
         HashMap<String, List<String>> listDetail = new HashMap<String, List<String>>();
 
@@ -71,13 +73,6 @@ public class MainActivity extends AppCompatActivity {
             public void onGroupExpand(int groupPos) {
                 Toast.makeText(getApplicationContext(), expandableListTitle.get(groupPos) + "List expanded", Toast.LENGTH_SHORT).show();
 
-                String par = expandableListTitle.get(groupPos);
-                TextView searchWay = (TextView) findViewById(R.id.searchway);
-                searchWay.setText("/" + par);
-
-                //TextView text = (TextView) findViewById(R.id.listTitle);
-                //text.setBackgroundResource(R.color.colorAccent);
-
             }
         });
 
@@ -85,11 +80,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGroupCollapse(int groupPos) {
                 Toast.makeText(getApplicationContext(), expandableListTitle.get(groupPos) + "List collapsed", Toast.LENGTH_SHORT).show();
-
-                String par = expandableListTitle.get(groupPos);
-
-                TextView searchWay = (TextView) findViewById(R.id.searchway);
-                searchWay.setText("/" + par);
 
             }
         });
@@ -102,15 +92,30 @@ public class MainActivity extends AppCompatActivity {
 
                 String child = listDetail.get(expandableListTitle.get(groupPos)).get(childPos);
                 String par = expandableListTitle.get(groupPos);
+                int indexChild = listView.getFlatListPosition(listView.getPackedPositionForChild(groupPos, childPos));
+                listView.setItemChecked(indexChild, true);
 
                 TextView searchWay = (TextView) findViewById(R.id.searchway);
+                clicked = true;
                 searchWay.setText("/" + par + "/" + child);
+                searchField.setSelection(searchWay.getText().length());
 
-                //TextView text = (TextView) findViewById(R.id.expListItem);
-                //text.setBackgroundResource(R.color.colorAccent);
+                return false;
+            }
+        });
 
+        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView listV, View view, int groupPos, long id) {
+                String par = expandableListTitle.get(groupPos);
+                TextView searchWay = (TextView) findViewById(R.id.searchway);
+                int index = listView.getFlatListPosition(listView.getPackedPositionForGroup(groupPos));
+                listView.setItemChecked(index, true);
 
-
+                System.out.println("SETONGROUPCLICK: has parent" + par);
+                clicked = true;
+                searchWay.setText("/" + par);
+                searchField.setSelection(searchWay.getText().length());
                 return false;
             }
         });
@@ -118,18 +123,19 @@ public class MainActivity extends AppCompatActivity {
         searchField.addTextChangedListener(new TextWatcher(){
 
             public void afterTextChanged(Editable s) {
-                //searchField.setText("Efter");
-                TextView searchWay = (TextView) findViewById(R.id.searchway);
+                EditText searchWay = (EditText) findViewById(R.id.searchway);
                 String text = searchField.getText().toString();
-                listAdapter.filterData(text, searchWay, listView);
+                if (!clicked)
+                    listAdapter.filterData(text, searchWay, listView);
+                else{
+                    clicked = false;
+                }
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //searchField.getText().clear();
-
             }
         });
 
