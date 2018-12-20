@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/////STOOOOOOOOOOOOOOOOOOOOOOOOOP
-
 public class MainActivity extends AppCompatActivity {
 
 
@@ -26,18 +24,18 @@ public class MainActivity extends AppCompatActivity {
     public  HashMap<String, List<String>> getData(){
         HashMap<String, List<String>> listDetail = new HashMap<String, List<String>>();
 
-        List<String> light=  new ArrayList<String>();
+        List<String> light =  new ArrayList<String>();
         light.add("blue");
         light.add("green");
         light.add("pink");
 
-        List<String> medium=  new ArrayList<String>();
+        List<String> medium =  new ArrayList<String>();
         medium.add("green");
         medium.add("yellow");
         medium.add("red");
         medium.add("blue");
 
-        List<String> dark=  new ArrayList<String>();
+        List<String> dark =  new ArrayList<String>();
         dark.add("purple");
         dark.add("green");
         dark.add("blue");

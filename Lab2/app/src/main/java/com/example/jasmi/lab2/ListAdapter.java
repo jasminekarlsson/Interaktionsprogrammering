@@ -27,7 +27,7 @@ import static java.lang.Math.min;
  * Created by jasmi on 2018-11-29.
  */
 
-/////STOOOOOOOOOOOOOOOOOOOOOOOOOP
+
 
 public class ListAdapter implements ExpandableListAdapter {
 
