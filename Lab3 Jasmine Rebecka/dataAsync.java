@@ -91,11 +91,7 @@ public class dataAsync extends AsyncTask<String, Void, String> {
                 int id = jsonformat.getInt("id");
 
                 if(id == lastID){
-                    //for (int i = 0; i < min(5, names.length()) ; i++) {
-                    //    tmpnames.add(String.valueOf(names.get(i)));
-                    //    System.out.println("TMPNAMES: " + tmpnames.get(i) + "adapter ");
-                    //}
-                    if(names.length() > nrOfNames){
+                                        if(names.length() > nrOfNames){
                         for (int i = 0; i < nrOfNames; i++) {
                             tmpnames.add(String.valueOf(names.get(i)));
                         }
@@ -105,13 +101,8 @@ public class dataAsync extends AsyncTask<String, Void, String> {
                         }
                     }
 
-                    //if(tmpnames != null && adapter != null)
-                    //right order
-
+                    
                     nameList.put(lastID, tmpnames);
-
-
-
 
                     adapter = new MyAdapter(context, tmpnames);
                     popupWindow.setAdapter(adapter);
